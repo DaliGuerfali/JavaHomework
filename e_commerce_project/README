@@ -1,0 +1,85 @@
+The entry point of the app is the MainMenu instance, which serves as
+a Login/Signup Page.
+
+The Console UI is composed of different screens, which are menus with different purposes.
+
+The app uses .properties files as local databases, to emulate persistent storage.
+
+In this app there are two types of users:
+-Customers
+-Admins
+
+Users can:
+-View all products
+-View products by categories
+-Search for products by ID
+-Search for products by ID and category (for faster lookup)
+-Search for products by name
+-Search for products by name and category (for filtering purposes)
+
+
+Customers can:
+-Check out their shopping cart:
+    -They can add products
+    -They can remove products
+    -They can update the amount of the same product
+    -They can place an order:
+        -They can follow the steps of the order processing
+        -They can proceed to payment processing
+-Check the status of placed orders
+
+Admins can:
+-Manipulate the inventory:
+    -They can add new products
+    -They can update existing products
+    -They can remove products
+-View all customers registered
+-View the order history
+
+The Sign Up service only allows regular customers to register as new users.
+
+To create an Admin account, append "user.[new_username]=[password]",
+then "admin.[the_new_username]=" to users.properties.
+
+To add a new product category, create a new class under the Product_Management package
+that extends the Product class, then add the new category to the Catalog enum.
+
+The inventory is composed of the categories' sub-inventories, and is loaded when the app
+starts,is updated in memory and in real-time whenever a user does an action that may affect it,
+and is then saved before the app quits.
+
+The way the inventory is composed is a deliberate choice to make searching and filtering easier.
+
+Each customer has a shopping cart, in which they can add, update and remove items.
+The shopping carts are loaded when the app starts with the ShoppingCartsLoader class,
+then they're updated in memory just like the inventory of products, and finally saved
+before the app quits.
+
+The customer can proceed to place an order when their cart is filled with items.
+When placing an order, the customer needs to choose one of the various shipping options,
+they also have the option of entering a special code that will grant them a discount.
+
+The shipping options and code discounts are the two additional features implemented in this app,
+using enums in the OrderScreen class to make adding new options a very easy task.
+
+To finalize an order, the customer proceeds to the payment screen where they enter their
+confidential information. The transaction will only succeed if the balance of the customer's
+account allows them to buy the desired products.
+
+When the payment succeeds, the order is archived using the OrderHistory class,
+which loads all orders in memory when the app starts, then saves the order record
+before the app quits.
+
+The customer can check the status of their placed orders.
+
+When a payment succeeds, the UI transitions back to the main menu,
+with the following updates having taken place:
+-The shopping cart of the customer is cleared.
+-The inventory reflects the new stock counts of the purchased items.
+-Money is withdrawn from the balance of the customer.
+
+(Please note that customers get $1000 in their balance when they first register, and the balance needs
+to be refilled manually in the "users.properties" file when depleted, this process is manual
+because this is an e-commerce app, not a digital wallet app.)
+
+As for the admins, they can manipulate the inventory, along with viewing the user database, and the orders history.
